@@ -79,12 +79,10 @@ bot.on('callback_query', function onCallbackQuery(callbackQuery) {
         if (err) return console.log('Ooops!', err)
         user_data = JSON.parse(value);
         if (action === '1') {
-            user.lottonumber = Math.floor(Math.random() * 9000) + 1000;
+            user.lottonumber = Math.floor(Math.random() * 3000) + 1000;
             bot.sendMessage(user_data.chat_id, `
                 Dear ${ user_data.fullname }
-
-                Yout Lotto Number is ${ user.lottonumber }
-
+                Yout Lotto Number is ${ 'B' + user.lottonumber }
                 The Winners will be announced on 10/10/20!
                 Stay tuned on Our channels and groups
             `);
