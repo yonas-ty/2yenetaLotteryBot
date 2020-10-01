@@ -1,0 +1,6 @@
+2020/10/01-14:33:21.294 2fb0 Recovering log #217
+2020/10/01-14:33:21.294 2fb0 Level-0 table #219: started
+2020/10/01-14:33:21.382 2fb0 Level-0 table #219: 372 bytes OK
+2020/10/01-14:33:21.494 2fb0 Delete type=0 #217
+2020/10/01-14:33:21.495 2fb0 Delete type=3 #216
+2020/10/01-14:33:21.526 300c Moved #219 to level-1 372 bytes OK: files[ 3 19 0 0 0 0 0 ]
