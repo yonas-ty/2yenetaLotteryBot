@@ -82,11 +82,7 @@ bot.on('callback_query', function onCallbackQuery(callbackQuery) {
         if (action === '1') {
             user.lottonumber = Math.floor(Math.random() * 3000) + 1000;
             bot.sendMessage(user_data.chat_id, `
-                Dear ${ user_data.fullname }
-                Yout Lotto Number is ${ 'B' + user.lottonumber }
-                The Winners will be announced on 10/10/20!
-                Stay tuned on Our channels and groups
-            `);
+                Dear ${ user_data.fullname } \n Yout Lotto Number is ${ 'B' + user.lottonumber } \nThe Winners will be announced on 10/10/20! \nStay tuned on Our channels and groups `);
         } else {
             bot.sendMessage(user_data.chat_id, 'You are denied');
         }
