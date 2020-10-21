@@ -8,7 +8,8 @@ var level = require('level')
 var db = level('my-db')
 var app = express();
 const bot = new Bot(config.TOKEN, { polling: true });
-
+var firebase = require('firebase');
+var admin = require('firebase-admin');
 let states = ['init', 'name', 'phone_no', 'photo', 'done'];
 
 let user = {
@@ -20,6 +21,15 @@ let user = {
     state: states[0],
     status: ''
 }
+
+firebase.initializeApp(config.FIREBASE_CONFIG);
+admin.initializeApp({
+    credential: admin.credential.applicationDefault()
+});
+const firestore = firebase.firestore();
+const settings = { timestampsInSnapshots: true};
+firestore.settings(settings);
+var firebase_db = firebase.firestore();
 
 bot.onText(/\/start/, (msg) => {
 
@@ -64,7 +74,7 @@ bot.on('message', (msg) => {
         db.put(user.id, JSON.stringify(user), function(err) {
             bot.sendMessage(msg.chat.id, "Thank You for your participation 😄! we will check and send you your lottery number");
             bot.forwardMessage(config.ADMIN_ID, msg.from.id, msg.message_id);
-            bot.sendMessage(config.ADMIN_ID, "Is the reciept valid", options);
+            bot.sendMessage(config.ADMIN_ID, `Is the reciept valid? from ${user.fullname}`, options);
             if (err) return console.log('Err', err)
         });
 
@@ -81,10 +91,13 @@ bot.on('callback_query', function onCallbackQuery(callbackQuery) {
         user_data = JSON.parse(value);
         if (action === '1') {
             user.lottonumber = Math.floor(Math.random() * 3000) + 1000;
-            bot.sendMessage(user_data.chat_id, `
-                Dear ${ user_data.fullname } \n Yout Lotto Number is ${ 'B' + user.lottonumber } \nThe Winners will be announced on 10/10/20! \nStay tuned on Our channels and groups `);
+            bot.sendMessage(user_data.chat_id, `Hey ${ user_data.fullname } ,\nYout Lotto Number is ${ 'B' + user.lottonumber } \nWinners will be announced soon on our social medias! `);
+            bot.sendMessage(user_data.chat_id, 'Follow us on\nTelegram: https://t.me/raclewetboard\nFacebook: https://www.fb.com/RcLewet/\nInstagram: http://instagram.com/rclewet\nTwitter: http://twitter.com/rclewet\n');
+            firebase_db.collection('soldtickets').doc(user_data.fullname + user_data.chat_id).set(user);
+            bot.sendMessage(config.ADMIN_ID, `loto number sent to ${user_data.fullname}`)
+
         } else {
-            bot.sendMessage(user_data.chat_id, 'You are denied');
+            bot.sendMessage(user_data.chat_id, 'Please pay for the lottery and try again.');
         }
     })
 
