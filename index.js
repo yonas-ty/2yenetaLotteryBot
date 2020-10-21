@@ -91,7 +91,8 @@ bot.on('callback_query', function onCallbackQuery(callbackQuery) {
         user_data = JSON.parse(value);
         if (action === '1') {
             user.lottonumber = Math.floor(Math.random() * 3000) + 1000;
-            bot.sendMessage(user_data.chat_id, `Hey ${ user_data.fullname } ,\nYout Lotto Number is ${ 'B' + user.lottonumber } \nWinners will be announced soon on our social medias! `);
+            user.lottonumber = 'B' + user.lottonumber;
+            bot.sendMessage(user_data.chat_id, `Hey ${ user_data.fullname } ,\nYout Lotto Number is ${ user.lottonumber } \nWinners will be announced soon on our social medias! `);
             bot.sendMessage(user_data.chat_id, 'Follow us on\nTelegram: https://t.me/raclewetboard\nFacebook: https://www.fb.com/RcLewet/\nInstagram: http://instagram.com/rclewet\nTwitter: http://twitter.com/rclewet\n');
             firebase_db.collection('soldtickets').doc(user_data.fullname + user_data.chat_id).set(user);
             bot.sendMessage(config.ADMIN_ID, `loto number sent to ${user_data.fullname}`)
