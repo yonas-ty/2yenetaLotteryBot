@@ -104,7 +104,9 @@ bot.on('callback_query', function onCallbackQuery(callbackQuery) {
 });
 
 
-
+setInterval(function() {
+    var res = http.get('https://toyenetabot.herokuapp.com/');
+},30000);
 
 
 app.listen(config.PORT, function() {
