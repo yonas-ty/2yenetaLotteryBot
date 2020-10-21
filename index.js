@@ -73,8 +73,10 @@ bot.on('message', (msg) => {
         };
         db.put(user.id, JSON.stringify(user), function(err) {
             bot.sendMessage(msg.chat.id, "Thank You for your participation 😄! we will check and send you your lottery number");
-            bot.forwardMessage(config.ADMIN_ID, msg.from.id, msg.message_id);
-            bot.sendMessage(config.ADMIN_ID, `Is the reciept valid? from ${user.fullname}`, options);
+            setTimeout(() => {
+                bot.forwardMessage(config.ADMIN_ID, msg.from.id, msg.message_id);
+                bot.sendMessage(config.ADMIN_ID, `Is the reciept valid? from ${user.fullname}`, options);
+            },2000);
             if (err) return console.log('Err', err)
         });
 
