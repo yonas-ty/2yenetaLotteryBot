@@ -63,31 +63,35 @@ bot.on('message', (msg) => {
 
         user_data.state = states[4];
         db.get(msg.chat.id, function(err, value) { 
-
+            if(value) {
+                let user_data = JSON.parse(value); 
+                var options = {
+                    reply_markup: JSON.stringify({
+                        inline_keyboard: [
+                            [{
+                                text: 'Approve',
+                                callback_data: `{ "user": ${user_data.chat_id}, "state": "1" }`
+                            }],
+                            [{
+                                text: 'Decline',
+                                callback_data: `{ "user": ${user_data.chat_id}, "state": "2" }`
+                            }],
+                        ]
+                    })
+                };
+                db.put(msg.chat.id.id, JSON.stringify(user_data), function(err) {
+                    bot.sendMessage(msg.chat.id, "Thank You for your participation 😄! we will check and send you your lottery number");
+                    setTimeout(() => {
+                        bot.forwardMessage(config.ADMIN_ID, msg.from.id, msg.message_id);
+                        bot.sendMessage(config.ADMIN_ID, `Is the reciept valid? from ${user_data.fullname}`, options);
+                    },2000);
+                    if (err) return console.log('Err', err)
+                });
+            } 
+            
             
         });
-        var options = {
-            reply_markup: JSON.stringify({
-                inline_keyboard: [
-                    [{
-                        text: 'Approve',
-                        callback_data: `{ "user": ${msg.chat.id}, "state": "1" }`
-                    }],
-                    [{
-                        text: 'Decline',
-                        callback_data: `{ "user": ${msg.chat.id}, "state": "2" }`
-                    }],
-                ]
-            })
-        };
-        db.put(msg.chat.id.id, JSON.stringify(user_data), function(err) {
-            bot.sendMessage(msg.chat.id, "Thank You for your participation 😄! we will check and send you your lottery number");
-            setTimeout(() => {
-                bot.forwardMessage(config.ADMIN_ID, msg.from.id, msg.message_id);
-                bot.sendMessage(config.ADMIN_ID, `Is the reciept valid? from ${user_data.fullname}`, options);
-            },2000);
-            if (err) return console.log('Err', err)
-        });
+       
 
     }
 }
@@ -98,7 +102,7 @@ bot.on('callback_query', function onCallbackQuery(callbackQuery) {
     const action = JSON.parse(callbackQuery.data);
     const msg = callbackQuery.message;
     let user_data;
-    db.get(user.id, function(err, value) {
+    db.get(action.user, function(err, value) {
         if (err) return console.log('Ooops!', err)
         user_data = JSON.parse(value);
         if (action.state === '1') {
@@ -122,6 +126,6 @@ setInterval(function() {
 },30000);
 
 
-// app.listen(config.PORT, function() {
-//     console.log('Our app is running on http://localhost:' + config.PORT);
-// });
+app.listen(config.PORT, function() {
+    console.log('Our app is running on http://localhost:' + config.PORT);
+});
