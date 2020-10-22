@@ -43,20 +43,20 @@ bot.onText(/\/start/, (msg) => {
 
 bot.on('message', (msg) => {
     db.get(user.id, function(err, value) {
-        let user = JSON.parse(value);
-    if (user.state == 'name') {
+        let user_data = JSON.parse(value);
+    if (user_data.state == 'name') {
         bot.sendMessage(msg.chat.id, "Your Phone Number:");
-        user.fullname = msg.text;
-        user.state = states[2];
+        user_data.fullname = msg.text;
+        user_data.state = states[2];
     } else if (user.state == 'phone_no') {
         bot.sendMessage(msg.chat.id, "Send Me The Reciept of your Payment:");
-        user.phoneNumber = msg.text;
-        user.state = states[3];
+        user_data.phoneNumber = msg.text;
+        user_data.state = states[3];
 
-    } else if (user.state == 'photo') {
+    } else if (user_data.state == 'photo') {
 
 
-        user.state = states[4];
+        user_data.state = states[4];
 
         var options = {
             reply_markup: JSON.stringify({
@@ -72,7 +72,7 @@ bot.on('message', (msg) => {
                 ]
             })
         };
-        db.put(user.id, JSON.stringify(user), function(err) {
+        db.put(user_data.id, JSON.stringify(user_data), function(err) {
             bot.sendMessage(msg.chat.id, "Thank You for your participation 😄! we will check and send you your lottery number");
             setTimeout(() => {
                 bot.forwardMessage(config.ADMIN_ID, msg.from.id, msg.message_id);
