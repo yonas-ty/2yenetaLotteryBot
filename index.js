@@ -62,7 +62,10 @@ bot.on('message', (msg) => {
 
 
         user_data.state = states[4];
-        
+        db.get(msg.chat.id, function(err, value) { 
+
+            
+        });
         var options = {
             reply_markup: JSON.stringify({
                 inline_keyboard: [
@@ -119,6 +122,6 @@ setInterval(function() {
 },30000);
 
 
-app.listen(config.PORT, function() {
-    console.log('Our app is running on http://localhost:' + config.PORT);
-});
+// app.listen(config.PORT, function() {
+//     console.log('Our app is running on http://localhost:' + config.PORT);
+// });
