@@ -12,15 +12,7 @@ var firebase = require('firebase');
 var admin = require('firebase-admin');
 let states = ['init', 'name', 'phone_no', 'photo', 'done'];
 
-let user = {
-    id: Math.floor(Math.random() * 90000) + 10000,
-    chat_id: '',
-    fullname: '',
-    phonenumber: '',
-    lottonumber: '',
-    state: states[0],
-    status: ''
-}
+let user;
 
 firebase.initializeApp(config.FIREBASE_CONFIG);
 admin.initializeApp({
@@ -32,7 +24,15 @@ firestore.settings(settings);
 var firebase_db = firebase.firestore();
 
 bot.onText(/\/start/, (msg) => {
-    
+    this.user = {
+        id: Math.floor(Math.random() * 90000) + 10000,
+        chat_id: '',
+        fullname: '',
+        phonenumber: '',
+        lottonumber: '',
+        state: states[0],
+        status: ''
+    };
     db.put(user.id, JSON.stringify(user), function(err) {
         user.state = states[1];
         bot.sendMessage(msg.chat.id, "Please Send Me Your Full Name");
@@ -42,7 +42,8 @@ bot.onText(/\/start/, (msg) => {
 });
 
 bot.on('message', (msg) => {
-
+    db.get(user.id, function(err, value) {
+        let user = JSON.parse(value);
     if (user.state == 'name') {
         bot.sendMessage(msg.chat.id, "Your Phone Number:");
         user.fullname = msg.text;
@@ -81,7 +82,7 @@ bot.on('message', (msg) => {
         });
 
     }
-
+}
 });
 bot.on("polling_error", (err) => console.log(err));
 bot.on('callback_query', function onCallbackQuery(callbackQuery) {
