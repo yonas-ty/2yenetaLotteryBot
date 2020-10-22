@@ -32,11 +32,11 @@ firestore.settings(settings);
 var firebase_db = firebase.firestore();
 
 bot.onText(/\/start/, (msg) => {
-
-    bot.sendMessage(msg.chat.id, "Please Send Me Your Full Name");
-    user.chat_id = msg.chat.id;
+    
     db.put(user.id, JSON.stringify(user), function(err) {
         user.state = states[1];
+        bot.sendMessage(msg.chat.id, "Please Send Me Your Full Name");
+        user.chat_id = msg.chat.id;
         if (err) return console.log('Err', err)
     });
 });
