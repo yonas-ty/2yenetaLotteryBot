@@ -1,6 +1,5 @@
-2020/10/21-13:10:47.674 2048 Recovering log #240
-2020/10/21-13:10:47.675 2048 Level-0 table #242: started
-2020/10/21-13:10:47.737 2048 Level-0 table #242: 341 bytes OK
-2020/10/21-13:10:47.939 2048 Delete type=0 #240
-2020/10/21-13:10:47.939 2048 Delete type=3 #239
-2020/10/21-13:10:47.971 24f0 Moved #225 to level-1 333 bytes OK: files[ 3 24 0 0 0 0 0 ]
+2020/10/22-17:28:56.581 d8c Recovering log #3
+2020/10/22-17:28:56.581 d8c Level-0 table #5: started
+2020/10/22-17:28:56.710 d8c Level-0 table #5: 426 bytes OK
+2020/10/22-17:28:56.831 d8c Delete type=0 #3
+2020/10/22-17:28:56.831 d8c Delete type=3 #2
